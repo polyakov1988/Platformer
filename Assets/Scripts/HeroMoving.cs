@@ -9,6 +9,7 @@ public class HeroMoving : MonoBehaviour
     [SerializeField] private float _jumpForce;
     
     private const string Horizontal = "Horizontal";
+    private const string Jump = "Jump";
     
     private static readonly int State = Animator.StringToHash("state");
     
@@ -32,7 +33,7 @@ public class HeroMoving : MonoBehaviour
         
         _rigidbody.velocity = new Vector2(_horizontalInput * _speed, _rigidbody.velocity.y);
 
-        if (Input.GetButtonDown("Jump") && _isGrounded)
+        if (Input.GetButtonDown(Jump) && _isGrounded)
         {
             _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _jumpForce);
 
