@@ -8,6 +8,8 @@ public class HeroMoving : MonoBehaviour
     [SerializeField] private float _speed;
     [SerializeField] private float _jumpForce;
     
+    private const string Horizontal = "Horizontal";
+    
     private static readonly int State = Animator.StringToHash("state");
     
     private Rigidbody2D _rigidbody;
@@ -26,7 +28,7 @@ public class HeroMoving : MonoBehaviour
 
     private void Update()
     {
-        _horizontalInput = Input.GetAxisRaw("Horizontal");
+        _horizontalInput = Input.GetAxisRaw(Horizontal);
         
         _rigidbody.velocity = new Vector2(_horizontalInput * _speed, _rigidbody.velocity.y);
 
@@ -47,23 +49,12 @@ public class HeroMoving : MonoBehaviour
     
     private void UpdateAnimationState()
     {
-        MovementState state;
-
-        if (_horizontalInput > 0f)
-        {
-            state = MovementState.Running;
-            _renderer.flipX = false;
-        }
-        else if (_horizontalInput < 0f)
-        {
-            state = MovementState.Running;
-            _renderer.flipX = true;
-        }
-        else
-        {
-            state = MovementState.Idle;
-        }
-
+        MovementState state = _horizontalInput == 0 
+            ? MovementState.Idle 
+            : MovementState.Running;
+        
+        _renderer.flipX = !(_horizontalInput > 0) && (_horizontalInput < 0 || _renderer.flipX);
+        
         if (_rigidbody.velocity.y > 0f && _isGrounded == false)
         {
             state = MovementState.Jumping;

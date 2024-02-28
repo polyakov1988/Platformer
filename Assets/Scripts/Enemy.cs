@@ -7,6 +7,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private GameObject _pointA;
     [SerializeField] private GameObject _pointB;
     [SerializeField] private float _speed;
+    [SerializeField] private float _minPointDistance;
 
     private static readonly int IsRunning = Animator.StringToHash("isRunning");
     
@@ -33,7 +34,7 @@ public class Enemy : MonoBehaviour
 
     private void CheckCurrentPoint(GameObject firstPoint, GameObject secondPoint)
     {
-        if (Vector2.Distance(transform.position, _currentPoint.position) < 0.5f && _currentPoint == firstPoint.transform)
+        if (Vector2.Distance(transform.position, _currentPoint.position) < _minPointDistance && _currentPoint == firstPoint.transform)
         {
             FlipSprite();
             _currentPoint = secondPoint.transform;
