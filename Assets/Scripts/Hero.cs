@@ -1,8 +1,7 @@
-using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Hero))]
-public class Hero : MonoBehaviour
+public class Hero : Person, IHealeable
 {
     private Wallet _wallet;
 
@@ -13,12 +12,33 @@ public class Hero : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.GetComponent<Coin>())
+        if (other.gameObject.TryGetComponent(out Coin coin))
         {
-            other.gameObject.GetComponent<Coin>().Take();
+            coin.Take();
             
             _wallet.AddCoin();
         }
+        
+        if (other.gameObject.TryGetComponent(out Heal heal))
+        {
+            heal.Take();
+            
+            Heal(heal.GetHealValue);
+        }
     }
 
+    public void Heal(float healValue)
+    {
+        _health += healValue;
+        
+        Debug.Log(_health);
+        Debug.Log(_maxHealth);
+
+        if (_health > _maxHealth)
+        {
+            _health = _maxHealth;
+        }
+        
+        Debug.Log(_health);
+    }
 }
