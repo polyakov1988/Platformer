@@ -30,15 +30,10 @@ public class Hero : Person, IHealeable
     public void Heal(float healValue)
     {
         _health += healValue;
-        
-        Debug.Log(_health);
-        Debug.Log(_maxHealth);
 
         if (_health > _maxHealth)
         {
             _health = _maxHealth;
         }
-        
-        Debug.Log(_health);
     }
 }
