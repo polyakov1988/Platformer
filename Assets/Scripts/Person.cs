@@ -1,31 +1,20 @@
-using System;
 using UnityEngine;
 
 public abstract class Person : MonoBehaviour, IDamageable
 {
-    [SerializeField] protected float _health;
     [SerializeField] protected float _damage;
     
-    protected float _maxHealth;
-
-    public event Action IsDead;
+    protected Health _health;
 
     public float GetDamage => _damage;
 
-    private void Start()
+    protected void Awake()
     {
-        _maxHealth = _health;
+        _health = GetComponent<Health>();
     }
 
     public void TakeDamage(float damageValue)
     {
-        _health -= damageValue;
-        
-        if (_health <= 0)
-        {
-            _health = 0;
-            
-            IsDead?.Invoke();
-        }
+        _health.TakeDamage(damageValue);
     }
 }

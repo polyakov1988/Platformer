@@ -5,8 +5,9 @@ public class Hero : Person, IHealeable
 {
     private Wallet _wallet;
 
-    private void Awake()
+    private new void Awake()
     {
+        base.Awake();
         _wallet = GetComponent<Wallet>();
     }
 
@@ -29,11 +30,6 @@ public class Hero : Person, IHealeable
 
     public void Heal(float healValue)
     {
-        _health += healValue;
-
-        if (_health > _maxHealth)
-        {
-            _health = _maxHealth;
-        }
+        _health.Heal(healValue);
     }
 }

@@ -27,12 +27,12 @@ public class HeroMovement : MonoBehaviour
 
     private void OnEnable()
     {
-        _hero.IsDead += SetDead;
+        _hero.GetComponent<Health>().IsDead += SetDead;
     }
 
     private void OnDisable()
     {
-        _hero.IsDead -= SetDead;
+        _hero.GetComponent<Health>().IsDead -= SetDead;
     }
     
     private void Awake()
