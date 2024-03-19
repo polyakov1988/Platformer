@@ -4,36 +4,58 @@ public class Vampirism : MonoBehaviour
 {
     [SerializeField] private BloodEffect _bloodEffect;
     [SerializeField] private float _suckedHealth;
+
+    private Enemy _enemy;
+    private Hero _hero;
     
     public bool IsActive { get; private set; }
-    
-    private void OnTriggerEnter2D(Collider2D other)
+
+    private void Awake()
     {
-        if (other.TryGetComponent(out Enemy enemy) && enemy.GetComponent<Health>().CurrentHealth != 0)
-        {
-            _bloodEffect.SetVictim(enemy);
-            _bloodEffect.gameObject.SetActive(true);
-            _bloodEffect.Play();
-        }
+        _hero = gameObject.GetComponentInParent<Hero>();
     }
 
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (_enemy != null)
+        {
+            return;
+        }
+        
+        if (other.TryGetComponent(out Enemy enemy) && enemy.IsDead() == false)
+        {
+            _enemy = enemy;
+            _bloodEffect.SetVictim(enemy);
+            _bloodEffect.gameObject.SetActive(true);
+        }
+    }
+    
     private void OnTriggerStay2D(Collider2D other)
     {
-        if (other.TryGetComponent(out Enemy enemy) && enemy.GetComponent<Health>().CurrentHealth != 0)
+        if (_enemy == null || (_enemy.IsDead()))
         {
-            float health = _suckedHealth * Time.deltaTime;
+            _bloodEffect.gameObject.SetActive(false);
+            _enemy = null;
             
-            enemy.TakeDamage(health);
-            gameObject.GetComponentInParent<Hero>().Heal(health);
+            return;
         }
+        
+        float health = _suckedHealth * Time.deltaTime;
+            
+        _enemy.TakeDamage(health);
+        _hero.Heal(health);
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.TryGetComponent(out Enemy enemy))
+        if (other.TryGetComponent(out Enemy enemy) && enemy == _enemy)
         {
-            _bloodEffect.Stop();
-            _bloodEffect.gameObject.SetActive(false);
+            if (_bloodEffect.enabled)
+            {
+                _bloodEffect.gameObject.SetActive(false);
+            }
+            
+            _enemy = null;
         }
     }
     

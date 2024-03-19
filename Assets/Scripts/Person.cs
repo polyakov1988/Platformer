@@ -17,4 +17,9 @@ public abstract class Person : MonoBehaviour, IDamageable
     {
         _health.TakeDamage(damageValue);
     }
+
+    public bool IsDead()
+    {
+        return _health.CurrentHealth == 0;
+    }
 }

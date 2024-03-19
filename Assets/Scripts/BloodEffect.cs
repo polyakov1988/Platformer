@@ -7,23 +7,16 @@ public class BloodEffect : MonoBehaviour
     [SerializeField] private ParticleSystem _particleSystem;
     private Enemy _victim; 
     
-    private void OnEnable()
-    {
-        if (_victim) 
-            _victim.GetComponent<Health>().IsDead += Stop;
-    }
-
-    private void OnDisable()
-    {
-        if (_victim) 
-            _victim.GetComponent<Health>().IsDead -= Stop;
-    }
-    
     private void Awake()
     {
         gameObject.SetActive(false);
     }
-
+    
+    private void OnEnable()
+    {
+        _particleSystem.Play();
+    }
+    
     private void Update()
     {
         Vector3 heroPosition = _hero.position;
@@ -35,18 +28,13 @@ public class BloodEffect : MonoBehaviour
         transform.position = _victim.transform.position;
     }
     
+    private void OnDisable()
+    {
+        _particleSystem.Stop();
+    }
+    
     public void SetVictim(Enemy enemy)
     {
         _victim = enemy;
-    }
-
-    public void Play()
-    {
-        _particleSystem.Play();
-    }
-    
-    public void Stop()
-    {
-        _particleSystem.Stop();
     }
 }
