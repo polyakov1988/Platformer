@@ -30,7 +30,7 @@ public class EnemyMovement : MonoBehaviour
 
     private void OnDisable()
     {
-        _enemy.GetComponent<Health>().IsDead += SetDead;
+        _enemy.GetComponent<Health>().IsDead -= SetDead;
     }
 
     private void Awake()

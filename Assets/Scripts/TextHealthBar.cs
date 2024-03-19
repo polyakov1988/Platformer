@@ -7,6 +7,6 @@ public class TextHealthBar : BaseBar
 
     protected override void OnHealthChanged()
     {
-        _healthBar.text = $"{_health.CurrentHealth} / {_health.MaxHealth}";
+        _healthBar.text = $"{(int) _health.CurrentHealth} / {(int) _health.MaxHealth}";
     }
 }
